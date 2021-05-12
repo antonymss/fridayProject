@@ -1,0 +1,12 @@
+.header {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.header a.active {
+    color: orange;
+    text-decoration: none;
+}
