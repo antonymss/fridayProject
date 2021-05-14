@@ -7,17 +7,31 @@ import {Register} from "../features/Register/Register";
 import {SetPassword} from "../features/SetPassword/SetPassword";
 import {Profile} from "../features/Profile/Profile";
 import {Header} from "../features/Header/Header";
+import {Packs} from "../features/Packs/Packs";
+import {Cards} from "../features/Cards/Cards";
+
+export const PATH = {
+    LOGIN: "/login",
+    REGISTER: "/register",
+    FORGOT: "/forgot",
+    SET_PASSWORD: "/set-new-password",
+    PROFILE: "/profile",
+    PACKS: "/packs",
+    CARDS: "/cards",
+}
 
 const App = () => {
   return (
     <div className="App">
       <Header/>
       <Switch>
-        <Route exact path={['/', '/login']} render={() => <Login/>}/>
-        <Route path={'/register'} render={() => <Register/>}/>
-        <Route path={'/forgot'} render={() => <Forgot/>}/>
-        <Route path={'/set-new-password/:token?'} render={() => <SetPassword/>}/>
-        <Route path={'/profile'} render={() => <Profile/>}/>
+        <Route exact path={['/', `${PATH.LOGIN}`]} render={() => <Login/>}/>
+        <Route path={PATH.REGISTER} render={() => <Register/>}/>
+        <Route path={PATH.FORGOT} render={() => <Forgot/>}/>
+        <Route path={`${PATH.SET_PASSWORD}/:token?`} render={() => <SetPassword/>}/>
+        <Route path={PATH.PROFILE} render={() => <Profile/>}/>
+        <Route path={PATH.PACKS} render={() => <Packs/>}/>
+        <Route path={`${PATH.CARDS}/:packId?`} render={() => <Cards/>}/>
         <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
         <Redirect from={'*'} to={'/404'}/>
 
