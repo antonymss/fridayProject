@@ -13,7 +13,10 @@ export const forgotReducer = (state: InitialForgotStateType = initialState, acti
         case 'FORGOT/SET-REQUEST-STATUS': {
             return {
                 ...state,
-                requestStatus: action.requestStatus
+                requestStatus: action.requestStatus,
+                error: action.requestStatus === 'success'
+                    ? ''
+                    : state.error
             }
         }
         case 'FORGOT/SET-ERROR': {
