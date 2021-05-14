@@ -21,7 +21,10 @@ export const authReducer = (state: InitialAuthStateType = initialState, action: 
         case 'AUTH/SET-REQUEST-STATUS': {
             return {
                 ...state,
-                requestStatus: action.requestStatus
+                requestStatus: action.requestStatus,
+                error: action.requestStatus === 'success'
+                    ? ''
+                    : state.error
             }
         }
         case 'AUTH/SET-ERROR': {
@@ -30,12 +33,6 @@ export const authReducer = (state: InitialAuthStateType = initialState, action: 
                 error: action.error
             }
         }
-        // case 'login/SET-IS-LOGGED-IN': {
-        //     return {
-        //         ...state,
-        //         isLoggedIn: action.value
-        //     }
-        // }
         default:
             return state
     }
@@ -50,15 +47,12 @@ const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
     type: 'AUTH/SET-REQUEST-STATUS',
     requestStatus
 } as const)
-// export const setIsLoggedInAC = (value: boolean) => ({
-//         type: 'login/SET-IS-LOGGED-IN', value} as const
-// )
+
 const setErrorAC = (error: string) => ({type: 'AUTH/SET-ERROR', error} as const)
 
 
-
 //thunks
-export const loginTC = (loginData: LoginDataType) => (dispatch: ThunkDispatch) => {
+export const loginTC = (loginData: LoginDataType) => (dispatch: ThunkCustomDispatch) => {
     dispatch(setRequestStatusAC('loading'))
     authAPI.login(loginData)
         .then((res) => {
@@ -74,7 +68,7 @@ export const loginTC = (loginData: LoginDataType) => (dispatch: ThunkDispatch) =
         })
 }
 
-export const logoutTC = () => (dispatch: ThunkDispatch) => {
+export const logoutTC = () => (dispatch: ThunkCustomDispatch) => {
     dispatch(setRequestStatusAC('loading'))
     authAPI.logout()
         .then(() => {
@@ -90,7 +84,7 @@ export const logoutTC = () => (dispatch: ThunkDispatch) => {
         })
 }
 
-export const getAuthUserDataTC = () => (dispatch: ThunkDispatch) => {
+export const getAuthUserDataTC = () => (dispatch: ThunkCustomDispatch) => {
     dispatch(setRequestStatusAC('loading'))
     authAPI.me()
         .then(res => {
@@ -116,4 +110,4 @@ export type ActionsType =
     | ReturnType<typeof setErrorAC>
 
 // тип диспатча:
-type ThunkDispatch = Dispatch<ActionsType>
+type ThunkCustomDispatch = Dispatch<ActionsType>
