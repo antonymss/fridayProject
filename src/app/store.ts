@@ -5,6 +5,8 @@ import {registerReducer} from "../features/Register/register-reducer";
 import {setPasswordReducer} from "../features/SetPassword/set-password-reducer";
 import {profileReducer} from "../features/Profile/profile-reducer";
 import {forgotReducer} from "../features/Forgot/forgot-reducer";
+import {packsReducer} from "../features/Packs/packs-reducer";
+import {cardsReducer} from "../features/Cards/cards-reducer";
 
 // комбайним редюсеры
 const rootReducer = combineReducers({  //стейт
@@ -12,7 +14,9 @@ const rootReducer = combineReducers({  //стейт
     register: registerReducer,
     forgot: forgotReducer,
     setPassword: setPasswordReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    packs: packsReducer,
+    cards: cardsReducer
 })
 //создаем store
 export const store = createStore(rootReducer, applyMiddleware(thunk));
