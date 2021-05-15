@@ -13,7 +13,10 @@ export const setPasswordReducer = (state: SetPasswordStateType = initialState, a
         case 'SET-PASSWORD/SET-REQUEST-STATUS': {
             return {
                 ...state,
-                requestStatus: action.requestStatus
+                requestStatus: action.requestStatus,
+                error: action.requestStatus === 'success'
+                    ? ''
+                    : state.error
             }
         }
         case 'SET-PASSWORD/SET-ERROR': {
