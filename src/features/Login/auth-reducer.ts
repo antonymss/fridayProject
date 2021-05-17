@@ -1,10 +1,13 @@
 import {Dispatch} from "redux";
 import {authAPI, LoginDataType} from "../../api/api";
+import {ThunkDispatch} from "redux-thunk";
+import {AppRootStateType} from "../../app/store";
 
 const initialState = {
     _id: "",
     email: "",
     name: "",
+    avatar: "" as string | undefined,
     error: "",
     isLoggedIn: false,
     requestStatus: 'idle' as RequestStatusType //изначально статус запроса - "неактивный"
@@ -39,9 +42,9 @@ export const authReducer = (state: InitialAuthStateType = initialState, action: 
 } // (при создании кейсов заменить "action: any" на общий тип actionов (ниже) "action: ActionsType")
 
 //action creators
-const setAuthUserDataAC = (_id: string, email: string, name: string, isLoggedIn: boolean) => ({
+export const setAuthUserDataAC = (_id: string, email: string, name: string, avatar: string | undefined, isLoggedIn: boolean) => ({
     type: 'AUTH/SET-AUTH-USER-DATA',
-    payload: {_id, email, name, isLoggedIn}
+    payload: {_id, email, name, avatar, isLoggedIn}
 } as const)
 const setRequestStatusAC = (requestStatus: RequestStatusType) => ({
     type: 'AUTH/SET-REQUEST-STATUS',
@@ -56,7 +59,7 @@ export const loginTC = (loginData: LoginDataType) => (dispatch: ThunkCustomDispa
     dispatch(setRequestStatusAC('loading'))
     authAPI.login(loginData)
         .then((res) => {
-            dispatch(setAuthUserDataAC(res.data._id, res.data.email, res.data.name, true))
+            dispatch(setAuthUserDataAC(res.data._id, res.data.email, res.data.name, res.data.avatar, true))
             dispatch(setRequestStatusAC('success'))
         })
         .catch(e => {
@@ -65,6 +68,9 @@ export const loginTC = (loginData: LoginDataType) => (dispatch: ThunkCustomDispa
                 : (e.message + ', more details in the console')
             dispatch(setErrorAC(error))
             dispatch(setRequestStatusAC('failed'))
+            setTimeout(() => {
+                dispatch(setErrorAC(''))
+            }, 3000)
         })
 }
 
@@ -72,7 +78,7 @@ export const logoutTC = () => (dispatch: ThunkCustomDispatch) => {
     dispatch(setRequestStatusAC('loading'))
     authAPI.logout()
         .then(() => {
-            dispatch(setAuthUserDataAC("", "", "", false))
+            dispatch(setAuthUserDataAC("", "", "", "", false))
             dispatch(setRequestStatusAC('success'))
         })
         .catch(e => {
@@ -81,14 +87,22 @@ export const logoutTC = () => (dispatch: ThunkCustomDispatch) => {
                 : (e.message + ', more details in the console')
             dispatch(setErrorAC(error))
             dispatch(setRequestStatusAC('failed'))
+            setTimeout(() => {
+                dispatch(setErrorAC(''))
+            }, 3000)
         })
 }
 
-export const getAuthUserDataTC = () => (dispatch: ThunkCustomDispatch) => {
+export const updateUserDataTC = (newData: { name?: string, avatar?: string }) => (dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>,
+                                                                                  getState: () => AppRootStateType) => {
     dispatch(setRequestStatusAC('loading'))
-    authAPI.me()
+    authAPI.updateUserData({
+        name: newData.name || getState().auth.name,
+        avatar: newData.avatar || getState().auth.avatar
+    })
         .then(res => {
-            dispatch(setAuthUserDataAC(res.data._id, res.data.email, res.data.name, true))
+            dispatch(setAuthUserDataAC(res.data.updatedUser._id, res.data.updatedUser.email,
+                res.data.updatedUser.name, res.data.updatedUser.avatar, getState().auth.isLoggedIn))
             dispatch(setRequestStatusAC('success'))
         })
         .catch(e => {
@@ -97,6 +111,9 @@ export const getAuthUserDataTC = () => (dispatch: ThunkCustomDispatch) => {
                 : (e.message + ', more details in the console')
             dispatch(setErrorAC(error))
             dispatch(setRequestStatusAC('failed'))
+            setTimeout(() => {
+                dispatch(setErrorAC(''))
+            }, 3000)
         })
 }
 
