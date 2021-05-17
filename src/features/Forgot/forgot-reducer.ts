@@ -47,7 +47,7 @@ const setErrorAC = (error: string) => ({type: 'FORGOT/SET-ERROR', error} as cons
 const setInfoAC = (info: string) => ({type: 'FORGOT/SET-INFO', info} as const)
 
 //thunk
-export const sendEmailToResetPassTC = (email: string) => (dispatch: ThunkDispatch) => {
+export const sendEmailToResetPassTC = (email: string) => (dispatch: ThunkCustomDispatch) => {
     dispatch(setRequestStatusAC('loading'))
     authAPI.sendEmailToResetPass(email)
         .then(res => {
@@ -71,4 +71,4 @@ export type ActionsType =
     | ReturnType<typeof setErrorAC>
     | ReturnType<typeof setInfoAC>
 // тип диспатча:
-type ThunkDispatch = Dispatch<ActionsType>
+type ThunkCustomDispatch = Dispatch<ActionsType>
