@@ -13,13 +13,13 @@ export const authAPI = {
         return instance.post<AuthUserData>(`auth/login`, loginData)
     },
     register(regData: RegDataType) {
-        return instance.post<{ addedUser: {}, error?: string }>(`auth/register`, regData)
+        return instance.post<{ addedUser: AuthUserData, error?: string }>(`auth/register`, regData)
     },
     logout() {
         return instance.delete<ResponseType>(`auth/me`)
     },
     updateUserData(newUserData: NewUserDataType) { // обновление name или аватарки юзера
-        return instance.put<{ updatedUser: {}, error?: string }>(`auth/me`, newUserData)
+        return instance.put<{ updatedUser: AuthUserData, error?: string }>(`auth/me`, newUserData)
     },
     sendEmailToResetPass(email: string) { // отправляем емайл, если забыл пароль, со страницы Forgot
         return instance.post<ResponseType>(`auth/forgot`, {
@@ -72,7 +72,7 @@ export const cardsAPI = {
             question, answer, grade, shots, rating, answerImg, questionImg,
             questionVideo, answerVideo, type
         } = params
-        return instance.post(`cards/card`, {
+        return instance.post<AddCardResponseType>(`cards/card`, {
             card: {
                 cardsPack_id: packId, question, answer, grade, shots,
                 rating, answerImg, questionImg, questionVideo, answerVideo, type
@@ -80,14 +80,14 @@ export const cardsAPI = {
         })
     },
     deleteCard(cardId: string) { //удаление карточки
-        return instance.delete(`cards/card?id=${cardId}`)
+        return instance.delete<DeleteCardResponseType>(`cards/card?id=${cardId}`)
     },
     updateCard(cardId: string, params: NewCardDataType = {}, comments?: string) { //изменение карточки
         const {
             question, answer, grade, shots, rating, answerImg, questionImg,
             questionVideo, answerVideo, type
         } = params
-        return instance.put(`cards/card`, {
+        return instance.put<UpdateCardResponseType>(`cards/card`, {
             card: {
                 _id: cardId, question, answer, grade, shots,
                 rating, answerImg, questionImg, questionVideo, answerVideo, type, comments
@@ -204,6 +204,7 @@ export type CardDataType = {
     user_id: string
     created: Date
     updated: Date
+    comments: string
 }
 
 export enum SortDirections {
@@ -213,21 +214,22 @@ export enum SortDirections {
 
 export type GetSortedPacksType = {
     nameToSearch?: string
-    minCardsCount?: string
-    maxCardsCount?: string
+    minCardsCount?: number
+    maxCardsCount?: number
     sortDirection?: SortDirections
     propToSortBy?: "name" | "cardsCount"
     page?: number
     pageCount?: number
     userId?: string
+
 }
 export type GetSortedCardsType = {
     question?: string
     answer?: string
     sortDirection?: SortDirections
     propToSortBy?: "grade"
-    minGrade?: string
-    maxGrade?: string
+    minGrade?: number
+    maxGrade?: number
     page?: number
     pageCount?: number
 }
@@ -243,4 +245,20 @@ export type NewCardDataType = {
     questionVideo?: string
     answerVideo?: string
     type?: "card"
+}
+
+export type AddCardResponseType = {
+    newCard: CardDataType
+    token: string
+    tokenDeathTime: number
+}
+export type DeleteCardResponseType = {
+    deletedCard: CardDataType
+    token: string
+    tokenDeathTime: number
+}
+export type UpdateCardResponseType = {
+    updatedCard: CardDataType
+    token: string
+    tokenDeathTime: number
 }
