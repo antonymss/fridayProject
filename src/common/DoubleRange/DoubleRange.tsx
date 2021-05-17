@@ -1,45 +1,39 @@
-import React, {ChangeEvent, MouseEventHandler, useEffect, useState} from "react";
+import React, {useCallback, useState} from "react";
+import {Slider} from 'antd';
 import style from "./DoubleRange.module.css";
 
 type DoubleRangePropsType = {
-    minRangeLimit?: string
-    maxRangeLimit: string
-    minValue: string | undefined
-    maxValue: string | undefined
-    onValuesChange: ([minValue, maxValue]: Array<string | undefined>) => void
+    minRangeLimit?: number
+    maxRangeLimit?: number
+    minValue: number | undefined
+    maxValue: number | undefined
+    onValuesChange: ([minValue, maxValue]: Array<number | undefined>) => void
 }
 export const DoubleRange = React.memo(({
-                                           minRangeLimit = '0',
-                                           maxRangeLimit,
+                                           minRangeLimit = 0,
+                                           maxRangeLimit = 100,
                                            minValue,
                                            maxValue,
                                            onValuesChange
                                        }: DoubleRangePropsType) => {
 
-    const [min, setMin] = useState(minValue || '0')
-    const [max, setMax] = useState(maxValue || '5')
+    const [min, setMin] = useState(minValue || 0)
+    const [max, setMax] = useState(maxValue || 5)
 
-    useEffect(() => {
-        if (min === max) {
-            setMin((+min - 1).toString())
-            setMax((+max + 1).toString())
-        }
-    }, [min, max, maxRangeLimit])
+    const onSliderValuesChange = useCallback((values: Array<number>) => {
+        setMin(values[0])
+        setMax(values[1])
+    }, [setMin, setMax])
 
-    const onRangeValuesChange = () => {
+    const onMouseUpHandler = useCallback(() => {
         onValuesChange([min, max])
-    }
+    }, [onValuesChange, min, max])
 
-    return <>
-        <div className={style.rangeBlock}>
-            {min}
-            <span className={style.doubleRange} onMouseUp={onRangeValuesChange}>
-                    <input type="range" min={minRangeLimit} value={min} onChange={e => setMin(e.currentTarget.value)}
-                           max={maxRangeLimit}/>
-                    <input type="range" min={minRangeLimit} value={max} onChange={e => setMax(e.currentTarget.value)}
-                           max={maxRangeLimit}/>
-                </span>
-            {max}
-        </div>
-    </>
+    return <span className={style.rangeBlock}>
+        <Slider range={{draggableTrack: true}} value={[min, max]} min={minRangeLimit} max={maxRangeLimit}
+                onChange={onSliderValuesChange}
+                onAfterChange={onMouseUpHandler}
+                tooltipVisible
+        />
+    </span>
 })
