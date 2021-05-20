@@ -1,19 +1,17 @@
 import React from "react";
 import style from "./Login.module.css"
-import {NavLink} from "react-router-dom";
+import {NavLink, Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {useFormik} from "formik";
-import {Redirect} from 'react-router-dom';
 import {InitialAuthStateType, loginTC} from "./auth-reducer";
-import {Simulate} from "react-dom/test-utils";
+import {PATH} from "../../app/App";
 
 
 export const Login = () => {
 
     const dispatch = useDispatch()
     const {isLoggedIn, requestStatus, error} = useSelector<AppRootStateType, InitialAuthStateType>(state => state.auth)
-
 
     const formik = useFormik({
         validate: (values) => {
@@ -38,10 +36,10 @@ export const Login = () => {
         },
     })
 
-
     if (isLoggedIn) {
-        return <Redirect to={"/profile"}/>
+        return <Redirect to={PATH.PROFILE}/>
     }
+
     return (
         <div>
             <form onSubmit={formik.handleSubmit}>
