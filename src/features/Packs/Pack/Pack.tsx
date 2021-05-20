@@ -7,8 +7,9 @@ import style from "./Pack.module.css";
 
 type PackPropsType = {
     pack: PackDataType
+    authUserId: string
 }
-export const Pack = ({pack}: PackPropsType) => {
+export const Pack = ({pack, authUserId}: PackPropsType) => {
     const dispatch = useDispatch()
 
     const onDeleteClick = () => {
@@ -23,10 +24,10 @@ export const Pack = ({pack}: PackPropsType) => {
         <td>{pack.name}</td>
         <td>{pack.cardsCount}</td>
         <td>{pack.updated}</td>
-        <td>string</td>
+        <td>{pack.user_name}</td>
         <td>
-            <button onClick={onDeleteClick}>Delete</button>
-            <button onClick={onUpdateClick}>Update</button>
+            <button onClick={onDeleteClick} disabled={pack.user_id !== authUserId}>Delete</button>
+            <button onClick={onUpdateClick} disabled={pack.user_id !== authUserId}>Update</button>
             <NavLink to={`/cards/${pack._id}`} activeClassName={style.active}>Cards</NavLink>
         </td>
     </tr>
