@@ -47,7 +47,7 @@ const setErrorAC = (error: string) => ({type: 'SET-PASSWORD/SET-ERROR', error} a
 const setInfoAC = (info: string) => ({type: 'SET-PASSWORD/SET-INFO', info} as const)
 
 //thunk
-export const resetPasswordTC = (password: string, resetPasswordToken: string | undefined) => (dispatch: ThunkDispatch) => {
+export const resetPasswordTC = (password: string, resetPasswordToken: string | undefined) => (dispatch: ThunkCustomDispatch) => {
     dispatch(setRequestStatusAC('loading'))
     authAPI.resetPassword({password, resetPasswordToken})
         .then(res => {
@@ -60,6 +60,9 @@ export const resetPasswordTC = (password: string, resetPasswordToken: string | u
                 : (e.message + ', more details in the console')
             dispatch(setErrorAC(error))
             dispatch(setRequestStatusAC('failed'))
+            setTimeout(() => {
+                dispatch(setErrorAC(''))
+            }, 3000)
         })
 }
 
@@ -71,4 +74,4 @@ export type ActionsType =
     | ReturnType<typeof setErrorAC>
     | ReturnType<typeof setInfoAC>
 // тип диспатча:
-type ThunkDispatch = Dispatch<ActionsType>
+type ThunkCustomDispatch = Dispatch<ActionsType>
