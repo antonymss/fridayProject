@@ -21,10 +21,12 @@ export const SetPassword = () => {
         setPassword2(e.currentTarget.value)
     }
     const onSubmit = () => {
-        if (password1 === password2) {
+        if (password1 === password2 && password1.length >= 8) {
             dispatch(resetPasswordTC(password1, token))
-        } else {
+        } else if (password1 !== password2) {
             setLocalError("Passwords don't match.")
+        } else if (password1.length < 8 || password2.length < 8) {
+            setLocalError("Password must contain at least 8 characters.")
         }
     }
     if (requestStatus === 'success') return <Redirect to={'/login'}/>
