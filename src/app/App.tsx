@@ -15,6 +15,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
 import {Spin} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
+import {Learn} from "../features/Learn/Learn";
+import { ScrollUpModal } from '../features/Modals/ScrollUpModal/ScrollUpModal';
 
 export const PATH = {
     LOGIN: "/login",
@@ -24,6 +26,7 @@ export const PATH = {
     PROFILE: "/profile",
     PACKS: "/packs",
     CARDS: "/cards",
+    LEARN: "/learn",
 }
 
 const App = () => {
@@ -53,10 +56,12 @@ const App = () => {
                 <Route path={PATH.LOGIN} render={() => <Login/>}/>
                 <Route path={PATH.PACKS} render={() => <Packs/>}/>
                 <Route path={`${PATH.CARDS}/:packId?`} render={() => <Cards/>}/>
+                <Route path={`${PATH.LEARN}/:packId?`} render={() => <Learn/>}/>
                 <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
                 <Redirect from={'*'} to={'/404'}/>
-
             </Switch>
+            {/*кнопка для скролла вверх появится только, если юзер промотал вниз на 400px*/}
+            <ScrollUpModal/>
         </div>
     );
 }
