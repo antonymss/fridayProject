@@ -12,21 +12,13 @@
     justify-content: space-evenly;
 }
 
-.table {
-    margin: 10px 0;
-    border: 2px solid rgb(133, 89, 89);
-}
-
-.cellWithButtons {
+.rangeContainer {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
 }
 
-th {
-    text-align: left;
-    vertical-align: middle;
-    width: 50px;
+.error {
+    color: red;
+    margin: 0 auto;
 }
 
 .pagination {
