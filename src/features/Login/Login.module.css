@@ -5,6 +5,18 @@
     justify-content: center;
     align-items: center;
 }
+
+.notice {
+    border: 1px dashed #d9d9d9;
+    border-radius: 2px;
+    padding: 8px;
+    background-color: #fafafa;
+}
+
+.loading {
+    color: green;
+}
+
 .error {
     color: red;
 }
