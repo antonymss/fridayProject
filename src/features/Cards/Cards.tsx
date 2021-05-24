@@ -1,26 +1,32 @@
 import React, {KeyboardEvent, useCallback, useEffect, useState} from "react";
 import style from "./Cards.module.css";
-import {Redirect, useParams} from "react-router-dom";
+import {NavLink, Redirect, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
-import {SortButtons} from "../../common/SortButtons/SortButtons";
-import {CardDataType, GetSortedCardsType, SortDirections} from "../../api/api";
+import {GetSortedCardsType, PackDataType} from "../../api/api";
 import {DoubleRange} from "../../common/DoubleRange/DoubleRange";
-import {addCardTC, CardsStateType, getCardsTC} from "./cards-reducer";
+import {CardsStateType, getCardsTC, setCardsAC} from "./cards-reducer";
 import {Paginator} from "../Paginator/Paginator";
 import {PATH} from "../../app/App";
-import {Card} from "./Card/Card";
+import {CardsTable} from "./CardsTable";
+import commonStyle from "../../common/styles/error.module.css";
 
 
 export const Cards = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const authUserId = useSelector<AppRootStateType, string>(state => state.auth._id)
-    const cards = useSelector<AppRootStateType, Array<CardDataType>>(state => state.cards.cards)
-    const packUserId = useSelector<AppRootStateType, string>(state => state.cards.packUserId)
     const {packId} = useParams<{ packId?: any }>()    //читаем id колоды из URL
-    const error = useSelector<AppRootStateType, string>(state => state.cards.error)
     const {minGrade, maxGrade} = useSelector<AppRootStateType, GetSortedCardsType>(state => state.cards.sortParams)
-    const {cardsTotalCount, page} = useSelector<AppRootStateType, CardsStateType>(state => state.cards)
+    const {
+        cards,
+        packUserId,
+        cardsTotalCount,
+        page,
+        pageCount,
+        error,
+        requestStatus
+    } = useSelector<AppRootStateType, CardsStateType>(state => state.cards)
+    const packs = useSelector<AppRootStateType, Array<PackDataType>>(state => state.packs.cardPacks)
     const dispatch = useDispatch()
 
     const [answer, setAnswer] = useState<string>("")
@@ -28,11 +34,11 @@ export const Cards = () => {
 
     useEffect(() => {
         if (isLoggedIn && packId) dispatch(getCardsTC(packId))   //запрашиваем карточки, если залогинен и есть packId
+        //зачищаем карточки при выходе со страницы Cards, чтобы во время запроса новых карточек в Cards не просвечивались старые
+        return () => {
+            dispatch(setCardsAC([], "", 1, 0, 10))
+        }
     }, [])
-
-    const onSortByGrade = useCallback((sortDirection: SortDirections) => {
-        dispatch(getCardsTC(packId, {sortDirection, propToSortBy: "grade"}))
-    }, [packId, dispatch])
 
     const onGradeRangeChange = useCallback(([minValue, maxValue]: Array<number | undefined>) => {
         dispatch(getCardsTC(packId, {minGrade: minValue, maxGrade: maxValue}))
@@ -48,19 +54,18 @@ export const Cards = () => {
             dispatch(getCardsTC(packId, {answer: answer}))
         }
     }
-    const onAddBtnClick = (packId: string) => {
-        dispatch(addCardTC(packId))
-    }
     const paginatorPage = useCallback((page: number, pageCount: number | undefined) => {
         dispatch(getCardsTC(packId, {page, pageCount}))
     }, [packId, dispatch])
+    //защита от попытки открыть Learn с выдуманным packId в url
+    let isPackFound = packs.some(p => p._id === packId)
 
     if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
-    if (isLoggedIn && !packId) return <Redirect to={PATH.PACKS}/>
+    if (isLoggedIn && !packId || isLoggedIn && !isPackFound) return <Redirect to={PATH.PACKS}/>
 
     return (
         <div className={style.cards}>
-            <h2>Cards</h2>
+            <h2><NavLink to={PATH.PACKS} activeClassName={style.active}>⏴ Packs</NavLink></h2>
             <div className={style.filter}>
                 {/*фильтр карточек по вопросу*/}
                 <label>Search cards by question: <input placeholder={'Press Enter to search'}
@@ -73,39 +78,20 @@ export const Cards = () => {
                                                       value={answer}
                                                       onChange={e => setAnswer(e.currentTarget.value)}/></label>
                 {/*двойной range для сортировки по оценкам (grade)*/}
-                <div style={{display: "flex"}}>Search cards by grade:
+                <div className={style.rangeContainer}>Search cards by grade:
                     <DoubleRange minValue={minGrade} maxValue={maxGrade} onValuesChange={onGradeRangeChange}
                                  maxRangeLimit={5}/></div>
             </div>
-            {error && <div style={{color: 'red', margin: '0 auto'}}>{error}</div>}
-            <table width="100%" cellPadding="4" className={style.table}>
-                <thead style={{outline: 'medium solid'}}>
-                <tr>
-                    <th>Question</th>
-                    <th>Answer</th>
-                    <th>
-                        <div className={style.cellWithButtons}>Grade<SortButtons onClick={onSortByGrade}/></div>
-                    </th>
-                    <th>Last Update</th>
-                    <th>Pack ID</th>
-                    <th>
-                        <button onClick={() => {
-                            onAddBtnClick(packId)
-                        }} disabled={packUserId !== authUserId}>Add
-                        </button>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {/*мапим карточки, чтобы они появились в таблице*/}
-                {cards.map(c => <Card key={c._id} card={c} packId={packId} authUserId={authUserId}/>)}
-                </tbody>
-            </table>
+            <div className={error && commonStyle.error}>{error}</div>
+            {/*таблица с карточками*/}
+            <CardsTable cards={cards} packId={packId} packUserId={packUserId} authUserId={authUserId} requestStatus={requestStatus}/>
             {/*Pagination*/}
             <div className={style.pagination}>
                 <Paginator current={page}
+                           pageCount={pageCount}
                            total={cardsTotalCount}
-                           onChange={paginatorPage}/>
+                           onChange={paginatorPage}
+                           requestStatus={requestStatus}/>
             </div>
         </div>
     );
