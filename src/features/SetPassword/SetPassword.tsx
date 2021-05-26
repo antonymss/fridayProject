@@ -4,6 +4,7 @@ import {NavLink, Redirect, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {resetPasswordTC, SetPasswordStateType} from "./set-password-reducer";
+import commonStyle from "../../common/styles/error.module.css";
 
 export const SetPassword = () => {
     const {requestStatus, error, info} = useSelector<AppRootStateType, SetPasswordStateType>(state => state.setPassword)
@@ -35,10 +36,10 @@ export const SetPassword = () => {
         <div className={style.setPassword}>
             Please enter your new password in each field.
             {requestStatus === 'loading'
-                ? <div style={{color: 'green'}}>loading...</div>
+                ? <div className={style.loading}>loading...</div>
                 : info && <i>{info}</i>}
-            {error && <div style={{color: 'red'}}>{error}</div>}
-            {localError && <div style={{color: 'red'}}>{localError}</div>}
+            <div className={error && commonStyle.error}>{error}</div>
+            {localError && !error && <div className={commonStyle.error}>{localError}</div>}
             <input type="password" value={password1} onChange={onPassword1Input}
                    onKeyPress={() => setLocalError("")}/>
             <input type="password" value={password2} onChange={onPassword2Input}
