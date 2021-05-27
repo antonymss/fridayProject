@@ -1,0 +1,15 @@
+.error {
+    width: fit-content;
+    padding: 5px;
+    color: red;
+    box-shadow: 5px 5px 5px grey;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    transition: transform .3s;
+    transform: translate(-50%, 50%) translate3d(50%, 10px, 0);
+    opacity: 0.7;
+    position: absolute;
+    top: 0;
+    left: 45%;
+    z-index: 22;
+}
