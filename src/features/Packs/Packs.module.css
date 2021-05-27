@@ -1,0 +1,29 @@
+.packs {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.filter {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.rangeContainer {
+    display: flex;
+}
+
+.error {
+    color: red;
+    margin: 0 auto;
+}
+
+.pagination {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
