@@ -99,7 +99,8 @@ export const getCardsTC = (packId: string, params: GetSortedCardsType = {}) => (
         })
 }
 
-export const addCardTC = (packId: string, params?: GetSortedCardsType) => (dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>) => {
+export const addCardTC = (packId: string, params: NewCardDataType = {}) => (
+    dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>) => {
     dispatch(setRequestStatusAC('loading'))
     cardsAPI.addCard(packId, params)
         .then(() => {
