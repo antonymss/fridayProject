@@ -51,8 +51,9 @@ export const packsAPI = {
     deletePack(packId: string) { //удаление колоды
         return instance.delete<DeletePackResponseType>(`cards/pack?id=${packId}`)
     },
-    updatePack(packId: string, name?: string) { //изменение колоды
-        return instance.put<UpdatePackResponseType>(`cards/pack`, {cardsPack: {_id: packId, name}})
+    updatePack(packId: string, params: NewPackType = {}) { //изменение колоды
+        const {name, deckCover, private: isPrivate} = params
+        return instance.put<UpdatePackResponseType>(`cards/pack`, {cardsPack: {_id: packId, name, deckCover, isPrivate}})
     },
 }
 
@@ -203,6 +204,8 @@ export type CardDataType = {
     created: Date
     updated: Date
     comments: string
+    answerImg: string
+    questionImg: string
 }
 
 export enum SortDirections {
