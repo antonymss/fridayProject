@@ -4,7 +4,38 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    flex-wrap: wrap;
+}
+
+textarea {
+    width: 300px;
+    height: 4em;
+    overflow: auto;
+    resize: vertical;
+}
+
+.previews {
+    width: 350px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.previewContainer {
+    width: 120px;
+    position: relative;
+}
+
+.preview {
+    overflow: hidden;
+    width: 80px;
+    height: 80px;
+    background: center no-repeat;
+    background-size: cover;
+}
+
+.bin {
+    position: absolute;
+    top: 30%;
+    right: 0;
 }
 
 .buttons {
