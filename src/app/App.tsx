@@ -13,10 +13,10 @@ import {Cards} from "../features/Cards/Cards";
 import {initializeAppTC} from "./app-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
-import {Spin} from 'antd';
-import {LoadingOutlined} from '@ant-design/icons';
 import {Learn} from "../features/Learn/Learn";
-import { ScrollUpModal } from '../features/Modals/ScrollUpModal/ScrollUpModal';
+import {ScrollUpModal} from '../features/Modals/ScrollUpModal/ScrollUpModal';
+import {TeamPresentation} from "../preloader/TeamPresentation/TeamPresentation";
+import {Files} from "../features/Files/Files";
 
 export const PATH = {
     LOGIN: "/login",
@@ -27,6 +27,7 @@ export const PATH = {
     PACKS: "/packs",
     CARDS: "/cards",
     LEARN: "/learn",
+    FILES: "/files",
 }
 
 const App = () => {
@@ -36,13 +37,8 @@ const App = () => {
         dispatch(initializeAppTC())
     }, [])
 
-    const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
-
     if (!isInitialized) {
-        return <div
-            style={{position: 'fixed', top: '50%', textAlign: 'center', width: '100%'}}>
-            <Spin indicator={antIcon} />
-        </div>
+        return <TeamPresentation/>
     }
 
     return (
@@ -57,6 +53,7 @@ const App = () => {
                 <Route path={PATH.PACKS} render={() => <Packs/>}/>
                 <Route path={`${PATH.CARDS}/:packId?`} render={() => <Cards/>}/>
                 <Route path={`${PATH.LEARN}/:packId?`} render={() => <Learn/>}/>
+                <Route path={PATH.FILES} render={() => <Files/>}/>
                 <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
                 <Redirect from={'*'} to={'/404'}/>
             </Switch>
