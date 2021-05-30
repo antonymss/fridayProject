@@ -3,7 +3,7 @@ import style from "./DeleteItemModal.module.css";
 import {Modal} from "../../../common/Modal/Modal";
 
 type DeleteItemModalPropsType = {
-    itemToDelete: 'pack' | 'card'
+    itemToDelete: 'pack' | 'card' | 'image'
     show: boolean
     setShow: (show: boolean) => void
     onDeleteBtnClick: (isToBeDeleted: boolean) => void
