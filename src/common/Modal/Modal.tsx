@@ -1,12 +1,12 @@
 import React, {CSSProperties} from "react";
 
 type ModalPropsType = {
-    enableBackground?: boolean;
-    backgroundOnClick?: () => void;
-    modalWidthPx: number;
-    modalHeightPx: number;
-    modalStyle?: CSSProperties;
-    modalOnClick?: () => void;
+    enableBackground?: boolean
+    backgroundOnClick?: () => void
+    modalWidthPx: number
+    modalHeightPx: number
+    modalStyle?: CSSProperties
+    modalOnClick?: () => void
     show: boolean
 }
 
@@ -49,8 +49,6 @@ export const Modal: React.FC<ModalPropsType> = React.memo((
                     left,
                     width: modalWidthPx,
                     height: modalHeightPx,
-                    minWidth: 'fit-content',
-                    minHeight: 'fit-content',
                     display: 'flex',
                     flexFlow: 'column',
                     alignItems: 'center',
