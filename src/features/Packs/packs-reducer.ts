@@ -1,4 +1,4 @@
-import {GetSortedPacksType, PackDataType, packsAPI, SortDirections} from "../../api/api";
+import {GetSortedPacksType, NewPackType, PackDataType, packsAPI, SortDirections} from "../../api/api";
 import {Dispatch} from "redux";
 import {RequestStatusType} from "../Login/auth-reducer";
 import {ThunkDispatch} from "redux-thunk";
@@ -96,7 +96,7 @@ export const getPacksTC = (params: GetSortedPacksType = {}) => (dispatch: ThunkC
         })
 }
 
-export const addPackTC = (name?: string, isPrivate?: boolean, deckCover?: string) => (
+export const addPackTC = (name?: string, deckCover?: string, isPrivate?: boolean) => (
     dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>) => {
     dispatch(setRequestStatusAC('loading'))
     packsAPI.addPack(name, isPrivate, deckCover)
@@ -129,9 +129,9 @@ export const deletePackTC = (packId: string) => (dispatch: ThunkDispatch<AppRoot
         })
 }
 
-export const updatePackTC = (packId: string, name?: string) => (dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>) => {
+export const updatePackTC = (packId: string, params: NewPackType = {}) => (dispatch: ThunkDispatch<AppRootStateType, void, ActionsType>) => {
     dispatch(setRequestStatusAC('loading'))
-    packsAPI.updatePack(packId, name)
+    packsAPI.updatePack(packId, params)
         .then(() => {
             dispatch(getPacksTC())
             dispatch(setRequestStatusAC('success'))
