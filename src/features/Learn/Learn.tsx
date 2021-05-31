@@ -36,6 +36,8 @@ export const Learn = () => {
         comments: '',
         created: new Date(),
         updated: new Date(),
+        answerImg: '',
+        questionImg: ''
     })
 
     useEffect(() => {
