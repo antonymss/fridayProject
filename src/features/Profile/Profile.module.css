@@ -4,12 +4,20 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .loading {
     color: green;
 }
 
-.error {
-    color: red;
+.avatarContainer {
+    width: 155px;
+    position: relative;
+}
+
+.avatarButtons {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
