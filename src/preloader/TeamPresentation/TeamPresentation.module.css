@@ -1,0 +1,54 @@
+.teamPresentation {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.section {
+    font-family: Garamond, Baskerville, "Baskerville Old Face", "Hoefler Text", "Times New Roman", serif;
+    font-size: 20px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 600;
+    line-height: 15.4px;
+    margin: 20px;
+}
+
+.avatars {
+    display: flex;
+    height: 200px;
+    position: relative;
+}
+
+.maria, .leonid, .anton {
+    margin: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 60px;
+    height: 60px;
+    background: center no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.leonid {
+    top: 100px;
+    animation: oneAvatarAnimation 0.6s linear infinite alternate;
+}
+
+@keyframes oneAvatarAnimation {
+    from {top: 100px;}
+    to {top: 0;}
+}
+
+.anton, .maria {
+    top: 0;
+    animation: twoAvatarsAnimation 0.6s linear infinite alternate;
+}
+
+@keyframes twoAvatarsAnimation {
+    from {top: 0;}
+    to {top: 100px;}
+}
