@@ -30,6 +30,55 @@
     right: 0;
 }
 
-video {
+.video {
     width: 60vw;
+    position: relative;
+}
+
+.video video, .videoControls {
+    width: 100%;
+}
+.videoControls {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+.playBtn {
+    height: 87%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+}
+.controlBtns {
+    position: absolute;
+    width: 100%;
+    bottom: 12px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.playAndTime {
+    width: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.playAndTime span {
+    color: white;
+}
+
+.settings {
+    position: relative;
+    width: 110px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.settings img {
+    position: relative;
+    height: 16px;
+    bottom: 3px;
 }
