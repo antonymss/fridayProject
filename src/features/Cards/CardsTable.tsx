@@ -9,6 +9,7 @@ import {RequestStatusType} from "../Login/auth-reducer";
 import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
 import {UpdateItemModal, UploadedImageDataType} from "../Modals/UpdateItemModal/UpdateItemModal";
 import {DeleteItemModal} from "../Modals/DeleteItemModal/DeleteItemModal";
+import style from "../Learn/Learn.module.css";
 
 type CardsTablePropsType = {
     cards: Array<CardDataType>
@@ -24,10 +25,13 @@ type ButtonsDataType = {
     questionImg: string
     answerImg: string
 }
-type CardType = {
+
+export type CardType = {
     key: string
     question: string
+    questionImg: string
     answer: string
+    answerImg: string
     grade: number
     updated: Date
     packId: string
@@ -92,10 +96,24 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
 // колонки (их заголовки и render в тех колонках, где надо отрисовывать элементы в таблице):
     const columns: ColumnsType<CardType> = [
         {title: 'Question', dataIndex: 'question', key: 'question'},
+        {
+            title: 'Question Pic', dataIndex: 'questionImg ', key: 'questionImg ',
+            render: (text, record) => <div className={style.questionImg}
+                                           style={{backgroundImage: `url(${record.questionImg})`}}>
+            </div>
+        },
         {title: 'Answer', dataIndex: 'answer', key: 'answer'},
+        {
+            title: 'Answer Pic', dataIndex: 'answerImg ', key: 'answerImg ',
+            render: (text, record) => <div className={style.answerImg}
+                                           style={{backgroundImage: `url(${record.answerImg})`}}>
+            </div>
+        },
         {title: 'Grade', dataIndex: 'grade', key: 'grade'},
         {title: 'Last Update', dataIndex: 'updated', key: 'updated'},
         {title: 'Pack ID', dataIndex: 'packId', key: 'packId'},
+
+
         {
             title: () => <>
                 {packUserId === authUserId &&
