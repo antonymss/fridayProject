@@ -65,7 +65,8 @@ export const Cards = () => {
 
     return (
         <div className={style.cards}>
-            <h2><NavLink to={PATH.PACKS} activeClassName={style.active}>⏴ Packs</NavLink></h2>
+            <h2>Cards</h2>
+            <h3><NavLink to={PATH.PACKS}>⏴ Packs</NavLink></h3>
             <div className={style.filter}>
                 {/*фильтр карточек по вопросу*/}
                 <label>Search cards by question: <input placeholder={'Press Enter to search'}
