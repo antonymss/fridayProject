@@ -9,6 +9,7 @@ import {Button, Progress} from "antd";
 import {DeleteTwoTone, UploadOutlined} from "@ant-design/icons";
 import {FilesStateType, getFileTC, sendFileTC} from "./files-reducer";
 import commonStyle from "../../common/styles/error.module.css";
+import {Video} from "./Video";
 
 export const downloadUpdatedFile = (fileName: string, text: string) => {
     const link = document.createElement("a");
@@ -98,7 +99,7 @@ export const Files = () => {
             </>}
             {/*превью видео*/}
             {/video\/.+/.test(fileType) && <>
-                <video src={fileURL} controls/>
+                <Video fileURL={fileURL}/>
             </>}
             {/*кнопки для отправки картинки на сервер*/}
             {fileData && <>
@@ -109,3 +110,4 @@ export const Files = () => {
         </div>
     );
 }
+
