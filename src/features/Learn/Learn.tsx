@@ -11,6 +11,7 @@ import {getRandomCard} from "../../utils/get-random-card";
 import commonStyle from "../../common/styles/error.module.css";
 
 
+
 export const Learn = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const history = useHistory()
@@ -81,6 +82,8 @@ export const Learn = () => {
                 <h4>Question: </h4>
                 <p className={style.text}>{card.question}</p>
             </div>
+            {card.questionImg && <div className={style.questionImg} style={{backgroundImage: `url(${card.questionImg})`}}>
+            </div>}
             {!showAnswer && <button className={style.section} onClick={() => setShowAnswer(true)}>Check answer</button>}
             {/*ответ*/}
             {showAnswer && <>
@@ -88,6 +91,8 @@ export const Learn = () => {
                     <h4>Answer: </h4>
                     <p className={style.text}>{card.answer}</p>
                 </div>
+                {card.answerImg && <div className={style.answerImg} style={{backgroundImage: `url(${card.answerImg})`}}>
+                </div>}
                 <div className={style.buttons}>
                     <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'1'}>
                         Не знал/<br/>Didn’t know
