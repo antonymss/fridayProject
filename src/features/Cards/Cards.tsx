@@ -1,6 +1,6 @@
 import React, {KeyboardEvent, useCallback, useEffect, useState} from "react";
 import style from "./Cards.module.css";
-import {NavLink, Redirect, useParams} from "react-router-dom";
+import {Redirect, useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../app/store";
 import {GetSortedCardsType, PackDataType} from "../../api/api";
@@ -10,11 +10,12 @@ import {Paginator} from "../Paginator/Paginator";
 import {PATH} from "../../app/App";
 import {CardsTable} from "./CardsTable";
 import commonStyle from "../../common/styles/error.module.css";
-
+import {Button} from 'antd';
 
 export const Cards = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const authUserId = useSelector<AppRootStateType, string>(state => state.auth._id)
+    const history = useHistory()
     const {packId} = useParams<{ packId?: any }>()    //читаем id колоды из URL
     const {minGrade, maxGrade} = useSelector<AppRootStateType, GetSortedCardsType>(state => state.cards.sortParams)
     const {
@@ -66,7 +67,10 @@ export const Cards = () => {
     return (
         <div className={style.cards}>
             <h2>Cards</h2>
-            <h3><NavLink to={PATH.PACKS}>⏴ Packs</NavLink></h3>
+            <h3>
+                <Button onClick={() => history.goBack()} style={{fontSize: '25px', color: '#1890ff', padding: '0 0 5px', lineHeight: '0'}}
+                        shape="circle" ghost>⏴</Button>
+            </h3>
             <div className={style.filter}>
                 {/*фильтр карточек по вопросу*/}
                 <label>Search cards by question: <input placeholder={'Press Enter to search'}
@@ -85,7 +89,8 @@ export const Cards = () => {
             </div>
             <div className={error && commonStyle.error}>{error}</div>
             {/*таблица с карточками*/}
-            <CardsTable cards={cards} packId={packId} packUserId={packUserId} authUserId={authUserId} requestStatus={requestStatus}/>
+            <CardsTable cards={cards} packId={packId} packUserId={packUserId} authUserId={authUserId}
+                        requestStatus={requestStatus}/>
             {/*Pagination*/}
             <div className={style.pagination}>
                 <Paginator current={page}
