@@ -17,6 +17,9 @@ import {Learn} from "../features/Learn/Learn";
 import {ScrollUpModal} from '../features/Modals/ScrollUpModal/ScrollUpModal';
 import {TeamPresentation} from "../preloader/TeamPresentation/TeamPresentation";
 import {Files} from "../features/Files/Files";
+import {Page404} from "../features/Page404/Page404";
+import {Users} from "../features/Users/Users";
+import {MapPage} from "../features/MapPage/MapPage";
 
 export const PATH = {
     LOGIN: "/login",
@@ -28,6 +31,8 @@ export const PATH = {
     CARDS: "/cards",
     LEARN: "/learn",
     FILES: "/files",
+    USERS: "/users",
+    MAP: "/map",
 }
 
 const App = () => {
@@ -45,7 +50,7 @@ const App = () => {
         <div className="App">
             <Header/>
             <Switch>
-                <Route exact path={['/', `${PATH.PROFILE}`]} render={() => <Profile/>}/>
+                <Route exact path={['/', `${PATH.PROFILE}/:userId?`]} render={() => <Profile/>}/>
                 <Route path={PATH.REGISTER} render={() => <Register/>}/>
                 <Route path={PATH.FORGOT} render={() => <Forgot/>}/>
                 <Route path={`${PATH.SET_PASSWORD}/:token?`} render={() => <SetPassword/>}/>
@@ -54,7 +59,9 @@ const App = () => {
                 <Route path={`${PATH.CARDS}/:packId?`} render={() => <Cards/>}/>
                 <Route path={`${PATH.LEARN}/:packId?`} render={() => <Learn/>}/>
                 <Route path={PATH.FILES} render={() => <Files/>}/>
-                <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
+                <Route path={PATH.USERS} render={() => <Users/>}/>
+                <Route path={PATH.MAP} render={() => <MapPage/>}/>
+                <Route path={'/404'} render={() => <Page404/>}/>
                 <Redirect from={'*'} to={'/404'}/>
             </Switch>
             {/*кнопка для скролла вверх появится только, если юзер промотал вниз на 400px*/}
