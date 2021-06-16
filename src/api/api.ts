@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const instance = axios.create({
+export const instance = axios.create({
     withCredentials: true,
     baseURL: 'https://neko-back.herokuapp.com/2.0/'
 }) //перед каждым pushем на gitHub менять baseURL с http://localhost:7542/2.0/ на https://neko-back.herokuapp.com/2.0/ !
