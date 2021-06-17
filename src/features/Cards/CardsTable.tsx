@@ -6,10 +6,9 @@ import {DeleteTwoTone, EditTwoTone, PlusSquareTwoTone} from '@ant-design/icons';
 import React, {useCallback, useState} from "react";
 import {addCardTC, deleteCardTC, updateCardTC} from "./cards-reducer";
 import {RequestStatusType} from "../Login/auth-reducer";
-import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
-import {UpdateItemModal, UploadedImageDataType} from "../Modals/UpdateItemModal/UpdateItemModal";
 import {DeleteItemModal} from "../Modals/DeleteItemModal/DeleteItemModal";
 import style from "../Learn/Learn.module.css";
+import {InputModal, UploadedImageDataType} from "../Modals/InputModal/InputModal";
 
 type CardsTablePropsType = {
     cards: Array<CardDataType>
@@ -147,18 +146,18 @@ export const CardsTable = React.memo(({cards, packId, packUserId, authUserId, re
                size={'small'} loading={requestStatus === 'loading'} tableLayout={'fixed'}/>
         {/*модалка для добавления карточки*/}
         {showAddItemModal &&
-        <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Question: ", "Answer: "]}
-                      itemToAdd={'card'} filesToUpload={['question pic', 'answer pic']}
-                      onAddBtnClick={onAddCardClick}/>}
+        <InputModal action={'add'} show={showAddItemModal} setShow={setShowAddItemModal}
+                    inputLabels={["question", "answer"]} onSubmitClick={onAddCardClick}
+                    itemToInput={'card'} filesToUpload={['question pic', 'answer pic']}/>}
         {/*модалка для удаления карточки*/}
         {showDeleteItemModal && <DeleteItemModal show={showDeleteItemModal} setShow={setShowDeleteItemModal}
                                                  itemToDelete={'pack'} onDeleteBtnClick={onDeleteClick}/>}
         {/*модалка для редактирования карточки*/}
-        {showUpdateItemModal && <UpdateItemModal show={showUpdateItemModal} setShow={setShowUpdateItemModal}
-                                                 itemToUpdate={'card'} onUpdateBtnClick={onUpdateClick}
-                                                 filesToUpload={['question pic', 'answer pic']}
-                                                 imageURLs={[questionImg, answerImg]}
-                                                 inputLabels={["Question: ", "Answer: "]}
-                                                 inputValues={[question, answer]}/>}
+        {showUpdateItemModal &&
+        <InputModal action={'update'} show={showUpdateItemModal} setShow={setShowUpdateItemModal}
+                    itemToInput={'card'} onSubmitClick={onUpdateClick}
+                    filesToUpload={['question pic', 'answer pic']}
+                    imageURLs={[questionImg, answerImg]} inputLabels={["question", "answer"]}
+                    inputValues={[question, answer]}/>}
     </>
 })
