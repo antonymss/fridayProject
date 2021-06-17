@@ -40,6 +40,8 @@ export const FileUploader: React.FC<FileUploaderPropsType> = React.memo(({
                                                                              children
                                                                          }) => {
     const inputRef = useRef<HTMLInputElement>(null)
+    //при каждой отрисовке зачищаем value inputa, чтобы onChange вызывался, даже если выбираем тот же файл снова
+    if (inputRef.current) inputRef.current.value = ''
 
     const uploadFile = (e: ChangeEvent<HTMLInputElement>) => {
         const reader = new FileReader()
@@ -85,8 +87,7 @@ export const FileUploader: React.FC<FileUploaderPropsType> = React.memo(({
     return <span style={{...style}}>
         <input type="file" multiple={false} accept={acceptOptions} ref={inputRef} style={{display: 'none'}}
                onChange={uploadFile}/>
-        <Button onClick={() => inputRef && inputRef.current && inputRef.current.click()}
-                type={'link'}>
+        <Button onClick={() => {inputRef && inputRef.current && inputRef.current.click()}} type={'link'}>
             {/*внешний вид кнопки будет любым в зависимости от переданного childrena*/}
             {children}
         </Button>
