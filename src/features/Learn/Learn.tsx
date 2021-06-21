@@ -11,7 +11,6 @@ import {getRandomCard} from "../../utils/get-random-card";
 import commonStyle from "../../common/styles/error.module.css";
 
 
-
 export const Learn = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
     const history = useHistory()
@@ -24,6 +23,7 @@ export const Learn = () => {
     const packs = useSelector<AppRootStateType, Array<PackDataType>>(state => state.packs.cardPacks)
     const dispatch = useDispatch()
     const [isFirstCard, setIsFirstCard] = useState<boolean>(true);
+    let currentPack = packs.find(p => p._id === packId)
     const [card, setCard] = useState<CardDataType>({
         _id: '',
         user_id: '',
@@ -74,15 +74,22 @@ export const Learn = () => {
     if (!isPackFound) return <Redirect to={PATH.PACKS}/>
 
     return <Modal show enableBackground modalWidthPx={800} modalHeightPx={600}
-                  backgroundOnClick={() => history.push(PATH.PACKS)}>
+                  backgroundOnClick={() => history.goBack()}>
         <div className={error && commonStyle.error}>{error}</div>
         {/*вопрос*/}
         <div className={style.learn}>
+            {/*отображаем обложку колоды*/}
+            {currentPack && currentPack.deckCover && currentPack.deckCover !== '0' &&
+            <div className={style.deckCover} style={{backgroundImage: `url(${currentPack.deckCover})`}}>
+            </div>}
+            {/*отображаем вопрос*/}
             <div className={style.section}>
                 <h4>Question: </h4>
                 <p className={style.text}>{card.question}</p>
             </div>
-            {card.questionImg && <div className={style.questionImg} style={{backgroundImage: `url(${card.questionImg})`}}>
+            {/*отображаем картинку вопроса, если есть*/}
+            {card.questionImg && card.questionImg !== '0' &&
+            <div className={style.questionImg} style={{backgroundImage: `url(${card.questionImg})`}}>
             </div>}
             {!showAnswer && <button className={style.section} onClick={() => setShowAnswer(true)}>Check answer</button>}
             {/*ответ*/}
@@ -91,7 +98,9 @@ export const Learn = () => {
                     <h4>Answer: </h4>
                     <p className={style.text}>{card.answer}</p>
                 </div>
-                {card.answerImg && <div className={style.answerImg} style={{backgroundImage: `url(${card.answerImg})`}}>
+                {/*отображаем картинку ответа, если есть*/}
+                {card.answerImg && card.answerImg !== '0' &&
+                <div className={style.answerImg} style={{backgroundImage: `url(${card.answerImg})`}}>
                 </div>}
                 <div className={style.buttons}>
                     <button onClick={e => onGradeBtnClick(e.currentTarget.dataset.grade)} data-grade={'1'}>
