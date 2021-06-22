@@ -62,7 +62,7 @@ export const packsReducer = (state = initialState, action: ActionsType): PacksSt
 } // (при создании кейсов заменить "action: any" на общий тип actionов (ниже) "action: ActionsType")
 
 //action creators
-const setPacksAC = (cardPacks: Array<PackDataType>, cardPacksTotalCount: number, page: number, pageCount: number) => ({
+export const setPacksAC = (cardPacks: Array<PackDataType>, cardPacksTotalCount: number, page: number, pageCount: number) => ({
     type: 'PACKS/SET-PACKS',
     cardPacks, cardPacksTotalCount,
     page, pageCount
