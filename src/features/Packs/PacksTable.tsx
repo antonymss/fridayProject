@@ -8,10 +8,10 @@ import {DeleteTwoTone, EditTwoTone, PlusSquareTwoTone} from '@ant-design/icons';
 import {SorterResult} from "antd/lib/table/interface";
 import React, {useCallback, useState} from "react";
 import {RequestStatusType} from "../Login/auth-reducer";
-import {AddItemModal} from "../Modals/AddItemModal/AddItemModal";
 import {PATH} from "../../app/App";
 import {DeleteItemModal} from "../Modals/DeleteItemModal/DeleteItemModal";
-import {UpdateItemModal, UploadedImageDataType} from "../Modals/UpdateItemModal/UpdateItemModal";
+import style from "../Learn/Learn.module.css";
+import {InputModal, UploadedImageDataType} from "../Modals/InputModal/InputModal";
 
 type PacksTablePropsType = {
     cardPacks: Array<PackDataType>
@@ -26,11 +26,12 @@ type ButtonsDataType = {
     deckCover: string
 }
 type PackType = {
-    key: string,
-    name: string,
-    cardsCount: number,
-    updated: Date,
-    createdBy: string,
+    key: string
+    name: string
+    deckCover: string
+    cardsCount: number
+    updated: Date
+    createdBy: string
     buttons: ButtonsDataType
 }
 export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: PacksTablePropsType) => {
@@ -77,6 +78,12 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
 // колонки (их заголовки и render в тех колонках, где надо отрисовывать элементы в таблице):
     const columns: ColumnsType<PackType> = [
         {title: 'Pack Name', dataIndex: 'name', key: 'name', sorter: true},
+        {
+            title: 'Deck Cover', dataIndex: 'deckCover', key: 'deckCover',
+            render: (text, record) => <div className={style.deckCover}
+                                           style={{backgroundImage: `url(${record.deckCover})`}}>
+            </div>
+        },
         {title: 'Cards Count', dataIndex: 'cardsCount', key: 'cardsCount', sorter: true},
         {title: 'Last Update', dataIndex: 'updated', key: 'updated'},
         {title: 'Created by', dataIndex: 'createdBy', key: 'createdBy'},
@@ -130,15 +137,16 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
                size={'small'} loading={requestStatus === 'loading'} tableLayout={'fixed'}/>
         {/*модалка для добавления колоды*/}
         {showAddItemModal &&
-        <AddItemModal show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["Name: "]}
-                      itemToAdd={'pack'} filesToUpload={['deck cover']} onAddBtnClick={onAddPackClick}/>}
+        <InputModal action={'add'} show={showAddItemModal} setShow={setShowAddItemModal} inputLabels={["name"]}
+                    itemToInput={'pack'} filesToUpload={['deck cover']} onSubmitClick={onAddPackClick}/>}
         {/*модалка для удаления колоды*/}
         {showDeleteItemModal && <DeleteItemModal show={showDeleteItemModal} setShow={setShowDeleteItemModal}
                                                  itemToDelete={'pack'} onDeleteBtnClick={onDeleteClick}/>}
         {/*модалка для редактирования колоды*/}
-        {showUpdateItemModal && <UpdateItemModal show={showUpdateItemModal} setShow={setShowUpdateItemModal}
-                                                 itemToUpdate={'pack'} onUpdateBtnClick={onUpdateClick}
-                                                 filesToUpload={['deck cover']} imageURLs={[currentPackCover]}
-                                                 inputLabels={["Name: "]} inputValues={[currentPackName]}/>}
+        {showUpdateItemModal &&
+        <InputModal action={'update'} show={showUpdateItemModal} setShow={setShowUpdateItemModal}
+                    itemToInput={'pack'} onSubmitClick={onUpdateClick}
+                    filesToUpload={['deck cover']} imageURLs={[currentPackCover]}
+                    inputLabels={["name"]} inputValues={[currentPackName]}/>}
     </>
 })
