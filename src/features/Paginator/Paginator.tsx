@@ -14,7 +14,8 @@ export const Paginator = (props: PaginatorType) => {
 
     return <div>
         <Pagination showQuickJumper current={props.current} total={props.total} onChange={props.onChange}
-                    pageSize={props.pageCount} disabled={props.requestStatus === 'loading'}/>
+                    pageSize={props.pageCount} disabled={props.requestStatus === 'loading'}
+                    pageSizeOptions={["5", "10", "20", "50", "100"]}/>
     </div>
 
 }
