@@ -38,9 +38,9 @@ export const Packs = () => {
 
     const onPrivatePacksSearch = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.currentTarget.checked) {
-            dispatch(getPacksTC({userId: authUserId, page: 1}))
+            dispatch(getPacksTC({userId: authUserId, page: 1, pageCount: 10}))
         } else {
-            dispatch(getPacksTC({userId: '', page: 1}))
+            dispatch(getPacksTC({userId: '', page: 1, pageCount: 10}))
         }
     }
 
