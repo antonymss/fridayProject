@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import style from "./Files.module.css";
 import muteIcon from "../../assets/images/mute.svg";
 import {
@@ -52,24 +52,24 @@ export const Video: React.FC<VideoPropsType> = React.memo(({fileURL}) => {
         }
     }, [])
 
-    const play = () => videoRef.current && videoRef.current.play()
-    const pause = () => videoRef.current && videoRef.current.pause()
-    const onCurrentTimeChange = (value: number) => {
+    const play = useCallback(() => videoRef.current && videoRef.current.play(), [videoRef])
+    const pause = useCallback(() => videoRef.current && videoRef.current.pause(), [videoRef])
+    const onCurrentTimeChange = useCallback((value: number) => {
         if (videoRef.current) {
             videoRef.current.currentTime = value
         }
-    }
-    const onVolumeChange = (value: number) => {
+    }, [videoRef])
+    const onVolumeChange = useCallback((value: number) => {
         if (videoRef.current) {
             videoRef.current.volume = value
         }
-    }
-    const onSpeedChange = (e: RadioChangeEvent) => {
+    }, [videoRef])
+    const onSpeedChange = useCallback((e: RadioChangeEvent) => {
         if (videoRef.current) {
             videoRef.current.playbackRate = e.target.value
         }
         setShowSpeedRates(false)
-    }
+    }, [videoRef])
     // слайдер-контроллер громкости:
     const volumeRate = (
         <Slider style={{height: '60px', margin: '0', padding: '0'}} vertical
