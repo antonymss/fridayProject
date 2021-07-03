@@ -3,38 +3,34 @@ import {Dispatch} from "redux";
 
 
 const initialState = {
-    responseText: '',
+    responseText: '', //used for errors as well
     isRegistration: false
 }
 
-export const registerReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+export const registerReducer = (state: RegisterStateType = initialState, action: ActionsType): RegisterStateType => {
     switch (action.type) {
-        //cases
-        case "REGISTER/SUCCESS_REGISTER": {
+        case "REGISTER/SET-RESPONSE-TEXT": {
             return {...state, responseText: action.text}
         }
         case "REGISTER/SET-REGISTRATION": {
             return {
                 ...state, isRegistration: action.isRegistration,
-                responseText: state.isRegistration === true ? '' : state.responseText
+                responseText: action.isRegistration ? '' : state.responseText
             }
         }
         default:
             return state
     }
-} // (при создании кейсов заменить "action: any" на общий тип actionов (ниже) "action: ActionsType")
+}
 
 //action creators
-// export const setSomethingAC = () => ({type: 'REGISTER/SET-SOMETHING'} as const)
-const setResponseTextAC = (text: string) => ({type: 'REGISTER/SUCCESS_REGISTER', text} as const)
+const setResponseTextAC = (text: string) => ({type: 'REGISTER/SET-RESPONSE-TEXT', text} as const)
 const setRegistrationAC = (isRegistration: boolean) => ({type: 'REGISTER/SET-REGISTRATION', isRegistration} as const)
-//thunk
-// export const doSomethingTC = () => (dispatch: ThunkDispatch) => {
-//
-// }
+
+//thunks
 export const requestRegister = (regData: RegDataType) => (dispatch: ThunkCustomDispatch) => {
     authAPI.register(regData)
-        .then((res) => {
+        .then(() => {
             dispatch(setResponseTextAC('success'))
 
             setTimeout(() => {
@@ -52,9 +48,8 @@ export const requestRegister = (regData: RegDataType) => (dispatch: ThunkCustomD
         })
 }
 //types
-export type InitialStateType = typeof initialState
+export type RegisterStateType = typeof initialState
 //объединение типов actionов:
-// export type ActionsType = ReturnType<typeof setSomethingAC>
 type ActionsType = ReturnType<typeof setResponseTextAC> | ReturnType<typeof setRegistrationAC>
-// тип диспатча:
+// тип кастомного диспатча:
 type ThunkCustomDispatch = Dispatch<ActionsType>
