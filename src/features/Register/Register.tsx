@@ -37,15 +37,16 @@ export const Register = () => {
 
     return (
         <div className={style.register}>
-            <h3>{text}</h3>
-            Register
+            {errorPassword && <div className={errorPassword && commonStyle.error}>{errorPassword}</div>}
+            {text && <h3 className={text !== 'success' ? commonStyle.error : style.info}>{text}</h3>}
+            <p>Please enter your correct email and</p>
+            <p>create a password to register:</p>
             <input type="email" placeholder={'email'} onChange={(e) => setEmailValue(e.currentTarget.value)}
                    onKeyPress={clearError}/>
             <input type="password" placeholder={'password'} onChange={(e) => setPassword(e.currentTarget.value)}
                    onKeyPress={clearError}/>
             <input type="password" placeholder={'confirm password'} onKeyPress={clearError}
                    onChange={(e) => setConfirmPassword(e.currentTarget.value)}/>
-            <div className={errorPassword && commonStyle.error}>{errorPassword}</div>
             <button onClick={setRegister}>Register</button>
             <NavLink to="/login" activeClassName={style.active}>Log in</NavLink>
         </div>
