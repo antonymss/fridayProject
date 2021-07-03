@@ -5,3 +5,8 @@
     justify-content: center;
     align-items: center;
 }
+
+.info {
+    color: #27D507;
+    font-weight: bold;
+}
