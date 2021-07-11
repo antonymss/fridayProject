@@ -1,0 +1,94 @@
+.page404 {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #f8f8f8;
+}
+.goBack {
+    position: absolute;
+    left: 10px;
+    top: 20px;
+    color: #1890ff;
+    z-index: 3;
+}
+.goBack button {
+    border: none;
+    cursor: pointer;
+}
+.bigError {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: -10vw;
+    color: rgba(0, 0, 0, .03);
+    font-size: 25vw;
+    text-align: center;
+    font-weight: 900;
+    font-family: sans-serif;
+}
+.ghostContainer {
+    text-align: center;
+    position: relative;
+}
+.ghostWithShadow {
+    width: 125px;
+    position: relative;
+    margin: 0 auto;
+    top: 130px;
+    left: 0;
+    right: 0;
+    border-radius: 150px 150px 7px 7px;
+    z-index: 1;
+}
+.ghost {
+    position: relative;
+    width: 125px;
+    height: 200px;
+    top: 0;
+    animation: ghost-animation 1.5s ease-in-out alternate infinite;
+}
+@keyframes ghost-animation {
+    from {
+        top: 0;
+    }
+    to {
+        top: 30px;
+    }
+}
+.shadow {
+    width: 80px;
+    height: 20px;
+    position: absolute;
+    margin: 250px auto;
+    left: 0;
+    right: 0;
+    animation: shadow-animation 1.5s ease-in-out alternate infinite;
+}
+@keyframes shadow-animation {
+    from {
+        margin: 255px auto;
+        width: 80px;
+        height: 20px;
+    }
+    to {
+        margin: 225px auto;
+        width: 118px;
+        height: 25px;
+    }
+}
+.errorTitle {
+    position: relative;
+    top: 225px;
+    color: #666;
+    font-size: 32px;
+    font-family: Source Sans Pro, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+.errorDescription {
+    position: relative;
+    top: 240px;
+    font-size: 14px;
+    line-height: 24px;
+    color: #979797;
+}
