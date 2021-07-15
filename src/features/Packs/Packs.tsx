@@ -33,7 +33,7 @@ export const Packs = () => {
     const [searchByName, setSearchByName] = useState('')
 
     useEffect(() => {
-        if (isLoggedIn) dispatch(getPacksTC())
+        if (isLoggedIn) dispatch(getPacksTC({userId: '', page: 1, pageCount: 10}))
     }, [])
 
     const onPrivatePacksSearch = (e: ChangeEvent<HTMLInputElement>) => {
