@@ -41,14 +41,13 @@ export const Header = () => {
                 <CloudServerOutlined style={{fontSize: '25px'}}/>
                 Files</NavLink>
             <NavLink to={PATH.USERS} activeClassName={style.active}>
-                <Popover content={<div>back-end for Users is not finished yet</div>} placement="bottom">
-                    <TeamOutlined style={{fontSize: '25px'}}/>Users
-                </Popover>
+                <TeamOutlined style={{fontSize: '25px'}}/>Users
             </NavLink>
             <NavLink to={PATH.MAP} activeClassName={style.active}>
                 <CompassOutlined style={{fontSize: '25px'}}/>
                 Map</NavLink>
-            {isLoggedIn && <Button onClick={onLogoutClick} icon={<LogoutOutlined style={{fontSize: '25px', color: '#1890ff'}}/>}
+            {isLoggedIn &&
+            <Button onClick={onLogoutClick} icon={<LogoutOutlined style={{fontSize: '25px', color: '#1890ff'}}/>}
                     disabled={requestStatus === 'loading'} shape="circle" ghost/>}
         </div>
     )
