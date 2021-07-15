@@ -17,6 +17,7 @@ type PacksTablePropsType = {
     cardPacks: Array<PackDataType>
     authUserId: string
     requestStatus: RequestStatusType
+    viewOnly?: boolean
 }
 type ButtonsDataType = {
     packId: string
@@ -34,7 +35,12 @@ type PackType = {
     createdBy: string
     buttons: ButtonsDataType
 }
-export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: PacksTablePropsType) => {
+export const PacksTable = React.memo(({
+                                          cardPacks,
+                                          authUserId,
+                                          requestStatus,
+                                          viewOnly = false
+                                      }: PacksTablePropsType) => {
     const [showAddItemModal, setShowAddItemModal] = useState<boolean>(false)
     const [showDeleteItemModal, setShowDeleteItemModal] = useState<boolean>(false)
     const [showUpdateItemModal, setShowUpdateItemModal] = useState<boolean>(false)
@@ -88,8 +94,10 @@ export const PacksTable = React.memo(({cardPacks, authUserId, requestStatus}: Pa
         {title: 'Last Update', dataIndex: 'updated', key: 'updated'},
         {title: 'Created by', dataIndex: 'createdBy', key: 'createdBy'},
         {
-            title: () => <Button onClick={() => setShowAddItemModal(true)} type={'ghost'} size={'large'}
-                                 icon={<PlusSquareTwoTone style={{fontSize: '16px'}}/>}/>,
+            title: () => <>
+                {!viewOnly && <Button onClick={() => setShowAddItemModal(true)} type={'ghost'} size={'large'}
+                                      icon={<PlusSquareTwoTone style={{fontSize: '16px'}}/>}/>}
+            </>,
             dataIndex: 'buttons',
             key: 'buttons',
             render: ({packId, packUserId, cardsCount, packName, deckCover}: ButtonsDataType) => <>
