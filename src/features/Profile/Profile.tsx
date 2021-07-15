@@ -43,7 +43,7 @@ export const Profile = () => {
                 dispatch(getPacksTC({userId: _id, page: 1, pageCount: 5}))
             }
         }
-    }, [])
+    }, [userId])
 
     const onImageEditorClick = useCallback((fileData: UploadedFileDataType) => {
         dispatch(updateUserDataTC({avatar: fileData.base64}))
@@ -97,7 +97,7 @@ export const Profile = () => {
                     <div>{currentUserData.name}</div>
                     <div>{currentUserData.email}</div>
                     {/*колоды карточек текущего открытого юзера*/}
-                    <div><PacksTable authUserId={currentUserData._id} cardPacks={cardPacks}
+                    <div><PacksTable authUserId={_id} cardPacks={cardPacks} viewOnly
                                      requestStatus={packsLoadingStatus}/></div>
                 </>
                 : <>
